@@ -1,6 +1,11 @@
 import React, { Component, PropTypes, cloneElement } from 'react';
 import classnames from 'classnames';
+import { immutableRenderDecorator } from 'react-immutable-render-mixin';
+import cssModules from 'react-css-modules';
+import styles from './style.scss';
 
+@immutableRenderDecorator
+@cssModules(styles, { allowMultiple: true })
 class TabPane extends Component {
   static propTypes = {
     tab: PropTypes.oneOfType([
@@ -13,19 +18,19 @@ class TabPane extends Component {
   };
 
   render() {
-    const { classPrefix, className, isActive, children } = this.props;
+    const { isActive, children } = this.props;
 
     const classes = classnames({
-      [className]: className,
-      [`${classPrefix}-panel`]: true,
-      [`${classPrefix}-active`]: isActive,
+      panel: true,
+      contentActive: isActive,
     });
 
     return (
       <div
         role="tabpanel"
         className={classes}
-        aria-hidden={!isActive}>
+        aria-hidden={!isActive}
+      >
         {children}
       </div>
     );

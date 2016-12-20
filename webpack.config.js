@@ -1,16 +1,20 @@
-var path = require('path');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var config = {
+const config = {
   entry: path.resolve(__dirname, './entry.js'),
   output: {
-    path: path.resolve(__dirname,'./build'),
-    filename: 'boundle.js'
+    path: path.resolve(__dirname, './dist'),
+    filename: 'boundle.js',
   },
-  module:{
-    loaders:[
+  watch: true,
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.scss', '.css'],
+  },
+  module: {
+    loaders: [
       {
-        test: /\.jsx?$/,
+        test: /\.js/,
         exclude: /node_modules/,
         loader: 'babel',
       },
@@ -24,13 +28,13 @@ var config = {
       },
       {
         test: /\.scss/,
-        loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader']),
-      }
-    ]
+        loader: ExtractTextPlugin.extract(['css-loader', 'sass?sourceMap=true&sourceMapContents=true']),
+      },
+    ],
   },
   plugins: [
-    new ExtractTextPlugin("style.css")
-  ]
+    new ExtractTextPlugin('style.css'),
+  ],
 };
 
 module.exports = config;

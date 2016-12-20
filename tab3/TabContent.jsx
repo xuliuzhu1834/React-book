@@ -1,15 +1,19 @@
 import React, { Component, PropTypes, cloneElement } from 'react';
 import classnames from 'classnames';
+import { immutableRenderDecorator } from 'react-immutable-render-mixin';
+import cssModules from 'react-css-modules';
+import styles from './style.scss';
 
+@immutableRenderDecorator
+@cssModules(styles, { allowMultiple: true })
 class TabContent extends Component {
   static propTypes = {
-    classPrefix: PropTypes.string,
     panels: PropTypes.node,
     activeIndex: PropTypes.number,
   };
 
   getTabPanes() {
-    const { classPrefix, activeIndex, panels } = this.props;
+    const { activeIndex, panels } = this.props;
 
     return React.Children.map(panels, (child) => {
       if (!child) { return; }
@@ -18,7 +22,6 @@ class TabContent extends Component {
       const isActive = activeIndex === order;
 
       return cloneElement(child, {
-        classPrefix,
         isActive,
         children: child.props.children,
         key: `tabpane-${order}`,
@@ -27,10 +30,8 @@ class TabContent extends Component {
   }
 
   render() {
-    const { classPrefix } = this.props;
-
     const classes = classnames({
-      [`${classPrefix}-content`]: true,
+      content: true,
     });
 
     return (

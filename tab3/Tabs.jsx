@@ -1,13 +1,16 @@
 import React, { Component, PropTypes, cloneElement } from 'react';
-import styles from './style.scss';
 import classnames from 'classnames';
+import { immutableRenderDecorator } from 'react-immutable-render-mixin';
+import cssModules from 'react-css-modules';
+import { Seq } from 'immutable';
+import styles from './style.scss';
 import TabNav from './TabNav';
 import TabContent from './TabContent';
 
+@immutableRenderDecorator
+@cssModules(styles, { allowMultiple: true })
 class Tabs extends Component {
   static propTypes = {
-    className: PropTypes.string,
-    classPrefix: PropTypes.string,
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
       PropTypes.node,
@@ -16,9 +19,7 @@ class Tabs extends Component {
     activeIndex: PropTypes.number,
     onChange: PropTypes.func,
   };
-
   static defaultProps = {
-    classPrefix: 'tabs',
     onChange: () => {},
   };
 
@@ -28,6 +29,7 @@ class Tabs extends Component {
     const currProps = this.props;
 
     this.handleTabClick = this.handleTabClick.bind(this);
+    this.immChildren = Seq(currProps.children);
 
     let activeIndex;
     if ('activeIndex' in currProps) {
@@ -62,27 +64,22 @@ class Tabs extends Component {
   }
 
   renderTabNav() {
-    const { classPrefix, children } = this.props;
-
     return (
       <TabNav
         key="tabBar"
-        classPrefix={classPrefix}
         onTabClick={this.handleTabClick}
-        panels={children}
+        panels={this.immChildren}
         activeIndex={this.state.activeIndex}
       />
     );
   }
 
   renderTabContent() {
-    const { classPrefix, children } = this.props;
     return (
       <TabContent
         key="tabcontent"
-        classPrefix={classPrefix}
         activeIndex={this.state.activeIndex}
-        panels={children}
+        panels={this.immChildren}
       />
     );
   }

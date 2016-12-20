@@ -1,10 +1,8 @@
 import React from 'react';
-import {render} from 'react-dom';
-
-// import Portal from './portal/Portal.jsx';
-import Tabs from './tab2/Tabs.jsx';
+import { render } from 'react-dom';
+import Tabs from './tab3/app';
 
 render(
-<Tabs/>,
-  document.getElementById('container')
+  <Tabs />,
+  document.getElementById('root'),
 );

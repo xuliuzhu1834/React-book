@@ -12,6 +12,7 @@ gen
 node_modules
 *.log
 build
+dist
 *.diff
 .sass-cache
 book.md
